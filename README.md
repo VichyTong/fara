@@ -17,6 +17,31 @@
 
 **Fara-7B** is Microsoft's first **agentic small language model (SLM)** designed specifically for computer use. With only 7 billion parameters, Fara-7B is an ultra-compact Computer Use Agent (CUA) that achieves state-of-the-art performance within its size class and is competitive with larger, more resource-intensive agentic systems.
 
+Try Fara-7B locally as follows (see [Installation](##Installation) for detailed instructions):
+
+```bash
+# 1. Clone repository
+git clone https://github.com/microsoft/fara.git
+cd fara
+
+# 2. Setup environment
+python3 -m venv .venv 
+source .venv/bin/activate
+pip install -e .
+playwright install
+```
+
+Then in one process, host the model:
+```bash
+vllm serve "microsoft/Fara-7B" --port 5000 --dtype auto 
+```
+Then you can iterative query it with:
+```bash
+fara-cli --task "whats the weather in new york now"
+```
+
+
+
 ### What Makes Fara-7B Unique
 
 Unlike traditional chat models that generate text-based responses, Fara-7B leverages computer interfaces—mouse and keyboard—to perform multi-step tasks on behalf of users. The model:
@@ -146,7 +171,7 @@ Deploy Fara-7B on [Azure Foundry](https://ai.azure.com/explore/models/Fara-7B/ve
 3. Run the Fara agent:
 
 ```bash
-python test_fara_agent.py --task "how many pages does wikipedia have" --start_page "https://www.bing.com"
+fara-cli --task "how many pages does wikipedia have" --start_page "https://www.bing.com"
 ```
 
 That's it! No GPU or model downloads required.
@@ -166,7 +191,7 @@ vllm serve "microsoft/Fara-7B" --port 5000 --dtype auto
 Run the test script to see Fara in action:
 
 ```bash
-python test_fara_agent.py --task "how many pages does wikipedia have" --start_page "https://www.bing.com" --endpoint_config endpoint_configs/azure_foundry_config.json [--headful] [--downloads_folder "/path/to/downloads"] [--save_screenshots] [--max_rounds 100] [--browserbase]
+fara-cli --task "how many pages does wikipedia have" --start_page "https://www.bing.com" --endpoint_config endpoint_configs/azure_foundry_config.json [--headful] [--downloads_folder "/path/to/downloads"] [--save_screenshots] [--max_rounds 100] [--browserbase]
 ```
 
 In self-hosting scenario the `endpoint_config` points to `endpoint_configs/vllm_config.json` from the VLLM server above.
@@ -176,13 +201,25 @@ If you set `--browserbase`, export environment variables for the API key and pro
 #### Expected Output
 
 ```
-[fara_agent] Wikipedia currently has approximately 64,394,387 pages.
-<tool_call>
-{"name": "computer_use", "arguments": {"action": "terminate", "status": "success"}}
-</tool_call>
+Initializing Browser...
+Browser Running... Starting Fara Agent...
+##########################################
+Task: how many pages does wikipedia have
+##########################################
+Running Fara...
 
-[fara_agent] Wikipedia currently has approximately 64,394,387 pages.
-INFO:__main__:Closing browser...
+
+Thought #1: To find the current number of Wikipedia pages, I'll search for the latest Wikipedia page count statistics.
+Action #1: executing tool 'web_search' with arguments {"action": "web_search", "query": "Wikipedia total number of articles"}
+Observation#1: I typed 'Wikipedia total number of articles' into the browser search bar.
+
+Thought #2: Wikipedia currently has 7,095,446 articles.
+Action #2: executing tool 'terminate' with arguments {"action": "terminate", "status": "success"}
+Observation#2: Wikipedia currently has 7,095,446 articles.
+
+Final Answer: Wikipedia currently has 7,095,446 articles.
+
+Enter another task (or press Enter to exit): 
 ```
 
 ---

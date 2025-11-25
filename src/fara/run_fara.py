@@ -10,10 +10,9 @@ import json
 
 
 # Configure logging to only show logs from fara.fara_agent
-# Disable all logging by default
 logging.basicConfig(
-    level=logging.CRITICAL,  # Set root logger to CRITICAL to suppress all logs
-    format="%(message)s",  # Simple format without logger name
+    level=logging.CRITICAL,  
+    format="%(message)s",  
 )
 
 # Enable INFO level only for fara.fara_agent
@@ -112,7 +111,8 @@ async def run_fara_agent(
         await agent.close()
 
 
-async def main():
+def main():
+    """CLI entry point for fara command."""
     parser = argparse.ArgumentParser(description="Run FARA agent interactively")
     parser.add_argument(
         "--task",
@@ -175,17 +175,19 @@ async def main():
         with open(args.endpoint_config, "r") as f:
             endpoint_config = json.load(f)
 
-    await run_fara_agent(
-        initial_task=args.task,
-        endpoint_config=endpoint_config,
-        start_page=args.start_page,
-        headless=not args.headful,
-        downloads_folder=args.downloads_folder,
-        save_screenshots=args.save_screenshots,
-        max_rounds=args.max_rounds,
-        use_browser_base=args.browserbase,
+    asyncio.run(
+        run_fara_agent(
+            initial_task=args.task,
+            endpoint_config=endpoint_config,
+            start_page=args.start_page,
+            headless=not args.headful,
+            downloads_folder=args.downloads_folder,
+            save_screenshots=args.save_screenshots,
+            max_rounds=args.max_rounds,
+            use_browser_base=args.browserbase,
+        )
     )
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
