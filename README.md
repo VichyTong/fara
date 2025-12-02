@@ -17,7 +17,7 @@
 
 **Fara-7B** is Microsoft's first **agentic small language model (SLM)** designed specifically for computer use. With only 7 billion parameters, Fara-7B is an ultra-compact Computer Use Agent (CUA) that achieves state-of-the-art performance within its size class and is competitive with larger, more resource-intensive agentic systems.
 
-Try Fara-7B locally as follows (see [Installation](##Installation) for detailed instructions):
+Try Fara-7B locally as follows (see [Installation](##Installation) for detailed instructions) or via Magentic-UI:
 
 ```bash
 # 1. Clone repository
@@ -40,15 +40,47 @@ Then you can iterative query it with:
 fara-cli --task "whats the weather in new york now"
 ```
 
-Hint: might need to do `--tensor-parallel-size 2` with vllm command if you run out of memory
+To try Fara-7B inside Magentic-UI, please follow the instructions here [Magentic-UI + Fara-7B](https://github.com/microsoft/magentic-ui/blob/main/README.md#fara-7b). You will need to serve the model as before, but instead of fara-cli you can use Magentic-UI which has a nice UI (see video demos below).
 
+
+Notes:
+- If you're using Windows, we highly recommend using WSL2 (Windows Subsystem for Linux).
+- You might need to do `--tensor-parallel-size 2` with vllm command if you run out of memory
+
+<table>
+<tr>
+<td width="33%" align="center">
+
+**Shopping**  
+
+<video src="https://github.com/user-attachments/assets/d2109eba-a91f-4a0b-8217-38c1dcc17e9a" width="100%" style="max-height: 300px;">
+</video>
+
+</td>
+<td width="33%" align="center">
+
+**GitHub Issues**  
+
+<video src="https://github.com/user-attachments/assets/bb177a09-8fcb-41be-8639-32044c1ec0e8" width="100%" style="max-height: 300px;">
+</video>
+
+</td>
+<td width="33%" align="center">
+
+**Directions with Cheese**  
+
+<video src="https://github.com/user-attachments/assets/b83d341e-25f6-4236-a946-4b8eaca987d5" width="100%" style="max-height: 300px;">
+</video>
+
+</td>
+</tr>
+</table>
 
 ### What Makes Fara-7B Unique
 
 Unlike traditional chat models that generate text-based responses, Fara-7B leverages computer interfaces—mouse and keyboard—to perform multi-step tasks on behalf of users. The model:
 
-- **Operates visually** by perceiving webpages and taking actions like scrolling, typing, and clicking on directly predicted coordinates
-- **Uses the same modalities as humans** to interact with computers—no accessibility trees or separate parsing models required
+- **Operates visually** by perceiving webpages and taking actions like scrolling, typing, and clicking on directly predicted coordinates without accessibility trees or separate parsing models
 - **Enables on-device deployment** due to its compact 7B parameter size, resulting in reduced latency and improved privacy as user data remains local
 - **Completes tasks efficiently**, averaging only ~16 steps per task compared to ~41 for comparable models
 
