@@ -187,3 +187,7 @@ ENV/
 env.bak/
 venv.bak/
 
+webeval/scripts/mlflow.db
+webeval/scripts/stdout.txt
+evaluation_results/
+*config.json
